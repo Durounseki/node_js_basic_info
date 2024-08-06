@@ -1,0 +1,9 @@
+<nav>
+        <!-- This component is called passing a value for the variable links -->
+            <!-- The links variable is an object with parameters href and text -->
+    <% for (let i = 0; i < links.length; i++) { %>
+        <a href="<%= links[i].href %>">
+            <%= links[i].text %>
+        </a>
+    <% } %>
+</nav>
