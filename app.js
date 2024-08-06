@@ -49,4 +49,4 @@ http.createServer(function(req,res){
             return res.end();
         }
     });
-}).listen(8080);
+}).listen(8080, () => {console.log("Server running...")});
