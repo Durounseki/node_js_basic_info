@@ -1,6 +1,6 @@
 <html>
     <head>
-        <title>Homepage</title>
+        <title><%= error.code %>></title>
         <link rel="stylesheet" href="/styles.css">
         <script src="https://kit.fontawesome.com/a5c4f7a4d5.js" crossorigin="anonymous"></script> <!-- Font awesome for icons-->
     </head>
@@ -9,7 +9,10 @@
         <header>
             <%- include('navbar', {links: links}) %>
         </header>
-        <%- include('content', {content: content}) %>
+        <div class="content">
+            <h1><%= error.code%> - <%= error.text %></h1>
+            <h2>Back to <a href="<%= links[0].href %>"><%= links[0].text %></a></h2>
+        </div>
         <%- include('footer', {link: link}) %>
     </body>
 </html>

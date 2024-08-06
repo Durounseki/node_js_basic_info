@@ -43,77 +43,40 @@ const profileLink = {
     faClass: "fa-brands fa-github",
     text: "Durounseki"
 }
+//Error Messages
+const errors = [
+    {
+        code: "404",
+        text: "Page not found"
+    },
+    {
+        code: "500",
+        text: "Internal Server Error"
+    }
+]
 
 //Render the views
 //home
 app.get("/", (req,res) => {
-    res.render("index",{links: links, content: HomeContent, link: profileLink });
+    res.render("content-page",{title: "Home", links: links, content: HomeContent, link: profileLink });
 });
 //about
 app.get("/about", (req,res) => {
-    res.render("about",{links: links, content: AboutContent, link: profileLink });
+    res.render("content-page",{title: "About", links: links, content: AboutContent, link: profileLink });
 });
 //contact-me
 app.get("/contact-me", (req,res) => {
-    res.render("contact-me",{links: links, content: ContactMeContent, link: profileLink });
+    res.render("content-page",{title: "Contact me", links: links, content: ContactMeContent, link: profileLink });
 });
 //404
 app.use((req, res, next) => {
-    res.status(404).render("404", {links: links, link: profileLink})
+    res.status(404).render("error-page", {error: errors[0], links: links, link: profileLink})
+});
+// Handle middleware errors
+app.use((err, req, res, next) => {
+    console.error(err.stack); // Log the error for debugging
+    res.status(500).render("error-page", {error: errors[1], links: links, link: profileLink});
 });
 
 const PORT = 3000;
 app.listen(PORT, () => console.log(`Basic EJS - listening on port ${PORT}!`));
-
-// const http = require('http');
-// const url = require('url');
-// const fs = require('fs');
-
-
-// //We need to parse the url addresses to the file names in our file tree
-// const pages = {"/":'index.html',"/about":'about.html',"/contact-me":'contact-me.html'}
-
-// http.createServer(function(req,res){
-//     //Extract the path
-//     const passedUrl = url.parse(req.url, true);
-//     let pathname = passedUrl.pathname;
-//     //Check if the requested path is a css file
-//     if (pathname.startsWith('/css/')) {
-//         const cssPath = path.join('./public', pathname);
-
-//         fs.readFile(cssPath, (err, data) => {
-//             if (err) {
-//                 res.writeHead(404, { 'Content-Type': 'text/css' }); // Set the correct content type for CSS
-//                 res.end('/* CSS not found */');
-//                 return;
-//             }
-
-//             res.writeHead(200, { 'Content-Type': 'text/css' }); // Set the correct content type for CSS
-//             res.write(data);
-//             res.end();
-//         });
-
-//         return; // Stop processing the request
-//     }
-
-//     //render the html files
-//     let pagePath;
-//     if(!pages[pathname]){
-//         //catch non existent files and return not found error
-//         pagePath = path.join('./public','/404.html');
-//     }else{
-//         pagePath = path.join('./public',pages[pathname]);
-//     }
-//     //Read the file and render
-//     fs.readFile(pagePath, (err,data) => {
-//         if(err){
-//             res.writeHead(404, { 'Content-Type': 'text/html' });
-//             res.end('<h1>404 - Not Found</h1>'); // Fallback error page
-//             return;
-//         }else{
-//             res.writeHead(200,{'Content-Type': 'text/html'});
-//             res.write(data);
-//             return res.end();
-//         }
-//     });
-// }).listen(8080, () => {console.log("Server running...")});
